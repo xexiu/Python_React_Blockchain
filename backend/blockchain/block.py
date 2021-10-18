@@ -1,12 +1,16 @@
 import time
 
+from backend.config import MIN_RATE
 from backend.util.crypto_hash import crypto_hash
+from backend.util.hex_to_binary import hex_to_binary
 
 GENESIS_DATA = {
     'timestamp': 1,
     'last_hash': 'genesis_last_hash',
     'hash': 'genesis_hash',
-    'data': []
+    'data': [],
+    'difficulty': 3,
+    'nonce': 'genesis_nonce'
 }
 
 class Block:
@@ -15,11 +19,13 @@ class Block:
     Store transactions in a blockchain that supports a cryptocurrency.
     """
 
-    def __init__(self, timestamp, last_hash, hash, data):
+    def __init__(self, timestamp, last_hash, hash, data, difficulty, nonce):
         self.timestamp = timestamp
         self.last_hash = last_hash
         self.hash = hash
         self.data = data
+        self.difficulty = difficulty
+        self.nonce = nonce
 
     def __repr__(self) -> str:
         return (
@@ -27,7 +33,9 @@ class Block:
             f'timestamp: {self.timestamp} '
             f'last_hash: {self.last_hash} '
             f'hash: {self.hash} '
-            f'data: {self.data})'
+            f'data: {self.data}) ',
+            f'difficulty: {self.difficulty}) ',
+            f'nonce: {self.nonce})',
         )
 
     @staticmethod
@@ -37,9 +45,17 @@ class Block:
         """
         timestamp = time.time_ns()
         last_hash = last_block.hash
-        hash = crypto_hash(timestamp, last_hash, data)
+        difficulty = Block.adjust_difficulty(last_block, timestamp)
+        nonce = 0
+        hash = crypto_hash(timestamp, last_hash, data, difficulty, nonce)
 
-        return Block(timestamp, last_hash, hash, data)
+        while hex_to_binary(hash)[0:difficulty] != '0' * difficulty:
+            nonce += 1
+            timestamp = time.time_ns()
+            difficulty = Block.adjust_difficulty(last_block, timestamp)
+            hash = crypto_hash(timestamp, last_hash, data, difficulty, nonce)
+
+        return Block(timestamp, last_hash, hash, data, difficulty, nonce)
 
     @staticmethod
     def genesis():
@@ -49,6 +65,21 @@ class Block:
 
         # return Block(GENESIS_DATA['timestamp'], GENESIS_DATA['last_hash'], GENESIS_DATA['hash'], GENESIS_DATA['data'])
         return Block(**GENESIS_DATA) # Extends all GENESIS_DATA arguments.
+
+    def adjust_difficulty(last_block, new_timestamp):
+        """
+        Calculate the difficulty depending on the MINE_RATE
+        Increase the difficulty for quickly mined blocks
+        Decrese the difficulty for slowly mined blocks
+        """
+
+        if(new_timestamp < last_block.timestamp) < MIN_RATE:
+            return last_block.difficulty + 1
+
+        if(last_block.difficulty - 1) > 0:
+            return last_block.difficulty - 1
+
+        return 1
 
 def main():
     genesis_block = Block.genesis()
