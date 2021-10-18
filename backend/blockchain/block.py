@@ -19,7 +19,7 @@ class Block:
     Store transactions in a blockchain that supports a cryptocurrency.
     """
 
-    def __init__(self, timestamp, last_hash, hash, data, difficulty, nonce):
+    def __init__(self, timestamp: int, last_hash: str, hash: str, data: list, difficulty: int, nonce: str):
         self.timestamp = timestamp
         self.last_hash = last_hash
         self.hash = hash
@@ -38,8 +38,11 @@ class Block:
             f'nonce: {self.nonce})',
         )
 
+    def __eq__(self, other: object) -> bool:
+        return self.__dict__ == other.__dict__
+
     @staticmethod
-    def mine_block(last_block, data):
+    def mine_block(last_block: classmethod, data: str) -> classmethod:
         """
         Mine a block based on the given last_block and data
         """
@@ -58,7 +61,7 @@ class Block:
         return Block(timestamp, last_hash, hash, data, difficulty, nonce)
 
     @staticmethod
-    def genesis():
+    def genesis() -> classmethod:
         """
         Generate the Genesis Block
         """
@@ -66,7 +69,7 @@ class Block:
         # return Block(GENESIS_DATA['timestamp'], GENESIS_DATA['last_hash'], GENESIS_DATA['hash'], GENESIS_DATA['data'])
         return Block(**GENESIS_DATA) # Extends all GENESIS_DATA arguments.
 
-    def adjust_difficulty(last_block, new_timestamp):
+    def adjust_difficulty(last_block: classmethod, new_timestamp: int) -> int:
         """
         Calculate the difficulty depending on the MINE_RATE
         Increase the difficulty for quickly mined blocks
@@ -81,10 +84,36 @@ class Block:
 
         return 1
 
+    @staticmethod
+    def is_valid_block(last_block: classmethod, block: classmethod) -> bool:
+        if(block.last_hash != last_block.hash):
+            raise Exception('The block last_hash must be correct!')
+        if(hex_to_binary(block.hash)[0:block.difficulty] != '0' * block.difficulty):
+            raise Exception('The proof of work requirement was not met!')
+        if(abs(last_block.difficulty - block.difficulty) > 1):
+            raise Exception('The block difficulty must only adjust by 1!')
+
+        reconstructed_hash = crypto_hash(
+            block.timestamp,
+            block.last_hash,
+            block.data,
+            block.difficulty,
+            block.nonce
+        )
+
+        if(block.hash != reconstructed_hash):
+            raise Exception('The block hash must be correct!')
+
+
 def main():
     genesis_block = Block.genesis()
-    block = Block.mine_block(genesis_block, 'foo')
-    print(block)
+    bad_block = Block.mine_block(genesis_block, 'foo')
+    bad_block.last_hash = 'evil_data'
+
+    try:
+        Block.is_valid_block(genesis_block, bad_block)
+    except Exception as e:
+        print(f'is_valid_block: {e}')
 
 if __name__ == '__main__':
     main()

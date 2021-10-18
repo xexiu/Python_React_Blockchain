@@ -2,7 +2,7 @@ import hashlib
 import json
 
 
-def crypto_hash(*args):
+def crypto_hash(*args: any) -> str:
     """
     Return a sha-256 of the given arguments *args
     """
