@@ -38,3 +38,24 @@ Python (API's Python Flask), Blockchains, Cryptocurrencies, Web Development (Bac
 - How the React engine works under the hood, and how React applies hooks.
 - CORS - and how to get over the CORS error properly.
 - How to build a pagination system.
+
+** Create a virtual environment **
+
+- Execute the following command: `python -m venv blockchain-env`
+
+** Activate the virtual environment **
+
+- Execute the following command; `source blockchain-env/bin/activate`
+
+# Install Requirements (install all packages)
+
+- Check what are the requirements/packages inside the requirements.txt file
+- Install them (packages) using the command: `pip install -r requirements.txt`
+
+** Run the tests (Make sure to activate the virtual env first) **
+
+- Execute the command: `python -m pytest backend/tests`
+
+
+
+
