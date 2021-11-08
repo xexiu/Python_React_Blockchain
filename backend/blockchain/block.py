@@ -2,16 +2,9 @@ import time
 
 from backend.config import MIN_RATE
 from backend.util.crypto_hash import crypto_hash
+from backend.util.global_variables import GENESIS_DATA
 from backend.util.hex_to_binary import hex_to_binary
 
-GENESIS_DATA = {
-    'timestamp': 1,
-    'last_hash': 'genesis_last_hash',
-    'hash': 'genesis_hash',
-    'data': [],
-    'difficulty': 3,
-    'nonce': 'genesis_nonce'
-}
 
 class Block:
     """
@@ -64,10 +57,10 @@ class Block:
     def genesis() -> classmethod:
         """
         Generate the Genesis Block
+        # return Block(GENESIS_DATA['timestamp'], GENESIS_DATA['last_hash'], GENESIS_DATA['hash'], GENESIS_DATA['data'])
         """
 
-        # return Block(GENESIS_DATA['timestamp'], GENESIS_DATA['last_hash'], GENESIS_DATA['hash'], GENESIS_DATA['data'])
-        return Block(**GENESIS_DATA) # Extends all GENESIS_DATA arguments.
+        return Block(**GENESIS_DATA)
 
     def adjust_difficulty(last_block: classmethod, new_timestamp: int) -> int:
         """
@@ -103,6 +96,12 @@ class Block:
 
         if(block.hash != reconstructed_hash):
             raise Exception('The block hash must be correct!')
+
+    def to_json(self) -> object:
+        return self.__dict__
+
+    def from_json(block_json):
+        return Block(**block_json)
 
 
 def main():

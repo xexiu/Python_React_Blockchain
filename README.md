@@ -56,6 +56,14 @@ Python (API's Python Flask), Blockchains, Cryptocurrencies, Web Development (Bac
 
 - Execute the command: `python -m pytest backend/tests`
 
+** Run the APP **
+
+- Execute the command: `python -m backend.app`
+
+** Run a PEER Instance **
+
+- Execute command: `export PEER=True && python -m backend.app`
+
 
 
 

@@ -1,6 +1,5 @@
 from backend.blockchain.block import Block
 
-
 class Blockchain:
     """
     Blockchain: a public ledger of transactions.
@@ -14,7 +13,7 @@ class Blockchain:
         self.chain.append(Block.mine_block(self.chain[-1], data))
 
     def __repr__(self) -> str:
-        return f'Blockcain: {self.chain}' # Blockcain: [<__main__.Block object at 0x100727520>, <__main__.Block object at 0x1007274c0>]
+        return f'Blockcain: {self.chain}'
 
     def replace_chain(self, chain: list):
         if(len(chain) <= len(self.chain)):
@@ -36,6 +35,17 @@ class Blockchain:
             block = chain[i]
             last_block = chain[i - 1]
             Block.is_valid_block(last_block, block)
+
+    def to_json(self):
+        return list(map(lambda block: block.to_json(), self.chain))
+
+    @staticmethod
+    def from_json(chain_json):
+        blockchain = Blockchain()
+        blockchain.chain = list(map(lambda block_json: Block.from_json(block_json), chain_json))
+
+        return blockchain
+
 
 
 def main():
