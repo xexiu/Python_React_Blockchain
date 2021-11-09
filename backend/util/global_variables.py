@@ -1,4 +1,5 @@
 ROOT_PORT: int = 5000
+ONE_SECOND = 1
 PORT: int = ROOT_PORT
 PEER: str = 'PEER'
 CHANNELS: dict[str, str] = {
@@ -18,3 +19,4 @@ GENESIS_DATA: dict[str, any] = {
     'difficulty': 3,
     'nonce': 'genesis_nonce'
 }
+BASE_URL = f'http://127.0.0.1:{ROOT_PORT}/'
