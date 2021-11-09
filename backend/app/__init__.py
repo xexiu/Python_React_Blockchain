@@ -29,8 +29,7 @@ def route_blockchain():
 
 @app.route('/blockchain/mine')
 def route_blockchain_mine():
-    transaction_date = 'stubbed_transaction_date'
-    blockchain.add_block(transaction_date)
+    blockchain.add_block(transaction_pool.transaction_data())
 
     last_block_in_chain = blockchain.chain[-1]
 
