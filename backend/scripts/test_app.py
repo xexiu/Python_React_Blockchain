@@ -4,17 +4,23 @@ import requests
 from backend.util.global_variables import BASE_URL, ONE_SECOND
 from backend.wallet.wallet import Wallet
 
+MAP_REQUESTS = {
+    'blockchain': requests.get(f'{BASE_URL}/blockchain').json(),
+    'mine': requests.get(f'{BASE_URL}/blockchain/mine').json(),
+    'wallet_transaction': lambda recipient, amount: requests.post(f'{BASE_URL}/wallet/transact', json={'recipient': recipient, 'amount': amount}).json()
+}
+
 
 def get_blockchain():
-    return requests.get(f'{BASE_URL}/blockchain').json()
+    return MAP_REQUESTS['blockchain']
 
 
 def get_blockchain_mine():
-    return requests.get(f'{BASE_URL}/blockchain/mine').json()
+    return MAP_REQUESTS['mine']
 
 
 def post_wallet_transaction(recipient, amount):
-    return requests.post(f'{BASE_URL}/wallet/transact', json={'recipient': recipient, 'amount': amount}).json()
+    return MAP_REQUESTS['wallet_transaction'](recipient, amount)
 
 
 start_blockchain = get_blockchain()
