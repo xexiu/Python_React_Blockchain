@@ -5,7 +5,7 @@ from backend.wallet.wallet import Wallet
 
 
 class Transaction:
-    def __init__(self, sender_wallet, recipient, amount):
+    def __init__(self, sender_wallet, recipient, amount) -> None:
         self.id = str(uuid.uuid4())[0:8]
         self.output = self.create_output(sender_wallet, recipient, amount)
         self.input = self.create_input(sender_wallet, self.output)
@@ -42,6 +42,10 @@ class Transaction:
 
         self.input = self.create_input(sender_wallet, self.output)
 
+    def to_json(self) -> object:
+        return self.__dict__
+
+    @staticmethod
     def is_valid_transaction(transaction):
         output_total = sum(transaction.output.values())
 

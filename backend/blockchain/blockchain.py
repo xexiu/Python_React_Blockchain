@@ -6,7 +6,7 @@ class Blockchain:
     Implemented as a list of blocks - data set of transactions.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.chain = [Block.genesis()]
 
     def add_block(self, data: str):

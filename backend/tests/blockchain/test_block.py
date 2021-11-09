@@ -2,7 +2,7 @@ import time
 
 import pytest
 from backend.blockchain.block import GENESIS_DATA, Block
-from backend.config import MIN_RATE, SECONDS
+from backend.util.config import MIN_RATE, SECONDS
 from backend.util.hex_to_binary import hex_to_binary
 
 

@@ -3,12 +3,15 @@ import random
 
 import requests
 from backend.blockchain.blockchain import Blockchain
-from backend.pubsub import PubSub
+from backend.pubsub.pubsub import PubSub
 from backend.util.global_variables import CONFIG_PN, PEER, PORT, ROOT_PORT
-from flask import Flask, jsonify
+from backend.wallet.transaction import Transaction
+from backend.wallet.wallet import Wallet
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 blockchain = Blockchain()
+wallet = Wallet()
 pubsub = PubSub(blockchain, **CONFIG_PN)
 
 
@@ -32,6 +35,18 @@ def route_blockchain_mine():
     pubsub.broadcast_block(last_block_in_chain)
 
     return jsonify(last_block_in_chain.to_json())
+
+
+@app.route('/wallet/transact', methods=['POST'])
+def route_wallet_transact():
+    # {'recipient': 'foo', 'amount': 15}
+
+    transaction_data = request.get_json()
+    transaction = Transaction(wallet, transaction_data['recipient'], transaction_data['amount'])
+
+    print(f'transaction.to_json: {transaction.to_json()}')
+
+    return jsonify(transaction.to_json())
 
 # Default to port=5000 -> app.run() -> Or add a custom port -> app.run(port:5001)
 

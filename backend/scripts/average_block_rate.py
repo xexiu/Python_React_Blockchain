@@ -1,7 +1,7 @@
 import time
 
 from backend.blockchain.blockchain import Blockchain
-from backend.config import SECONDS
+from backend.util.config import SECONDS
 
 blockchain = Blockchain()
 times = []

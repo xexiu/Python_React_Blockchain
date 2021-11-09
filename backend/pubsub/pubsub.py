@@ -1,35 +1,14 @@
 import time
 
-from pubnub.callbacks import SubscribeCallback
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 
 from backend.blockchain.block import Block
 from backend.util.global_variables import CHANNELS, CONFIG_PN
-
-
-class Listener(SubscribeCallback):
-    def __init__(self, blockchain: list):
-        self.blockchain = blockchain
-
-    def message(self, pubnub, message: str):
-        print(f'-- Channel: {message.channel} | Message: {message.message}')
-
-        if(message.channel == CHANNELS['BLOCK']):
-            block = Block.from_json(message.message)
-            potential_chain = self.blockchain.chain[:] # Attr [:] doest an exact copy of the list
-            potential_chain.append(block)
-
-            try:
-                self.blockchain.replace_chain(potential_chain)
-                print('\n -- Successfully replaced the local chain')
-            except Exception as e:
-                raise Exception(f'Could not replace chain: {e}')
-
-        return super().message(pubnub, message)
+from backend.pubsub.pubsub_listener import Listener
 
 class PubSub():
-    def __init__(self, blockchain, subKey: str, pubKey: str):
+    def __init__(self, blockchain, subKey: str, pubKey: str) -> None:
         self.subKey = subKey
         self.pubKey = pubKey
         self.pnconfig = self.config()

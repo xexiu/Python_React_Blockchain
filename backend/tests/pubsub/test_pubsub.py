@@ -1,6 +1,6 @@
 import pytest
 from backend.blockchain.blockchain import Blockchain
-from backend.pubsub import PubSub
+from backend.pubsub.pubsub import PubSub
 
 blockchain = Blockchain()
 dummy_pubKey = 'pub-1234'
