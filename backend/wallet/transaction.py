@@ -1,13 +1,15 @@
 import time
 import uuid
 
-from backend.wallet.wallet import Wallet
 from backend.util.config import MINING_REWARD, MINING_REWARD_INPUT
+from backend.wallet.wallet import Wallet
+
 
 class Transaction:
     def __init__(self, sender_wallet=None, recipient=None, amount=None, id=None, output=None, input=None) -> None:
         self.id = id or str(uuid.uuid4())[0:8]
-        self.output = output or self.create_output(sender_wallet, recipient, amount)
+        self.output = output or self.create_output(
+            sender_wallet, recipient, amount)
         self.input = input or self.create_input(sender_wallet, self.output)
 
     def create_output(self, sender_wallet, recipient, amount):
@@ -50,6 +52,11 @@ class Transaction:
 
     @staticmethod
     def is_valid_transaction(transaction):
+        if transaction.input == MINING_REWARD_INPUT:
+            if list(transaction.output.values()) != [MINING_REWARD]:
+                raise Exception('Invalid Mining Reward!')
+            return
+
         output_total = sum(transaction.output.values())
 
         if transaction.input['amount'] != output_total:
