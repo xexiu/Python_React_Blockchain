@@ -4,6 +4,8 @@ import requests
 from backend.util.global_variables import BASE_URL, ONE_SECOND
 from backend.wallet.wallet import Wallet
 
+### YOU MUST START THE SERVER BEFORE TESTING APP
+
 MAP_REQUESTS = {
     'blockchain': requests.get(f'{BASE_URL}/blockchain').json(), # get
     'mine': requests.get(f'{BASE_URL}/blockchain/mine').json(), # get
