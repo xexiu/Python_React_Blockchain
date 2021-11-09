@@ -32,6 +32,8 @@ recipient = Wallet().address
 post_wallet_transact_1 = post_wallet_transaction(recipient, 21)
 print(f'\npost_wallet_transact_1: {post_wallet_transact_1}')
 
+time.sleep(ONE_SECOND)
+
 post_wallet_transact_2 = post_wallet_transaction(recipient, 31)
 print(f'\npost_wallet_transact_2: {post_wallet_transact_2}')
 

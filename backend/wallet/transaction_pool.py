@@ -13,3 +13,11 @@ class TransactionPool:
     def transaction_data(self):
         return list(map(lambda transaction: transaction.to_json(), self.transaction_map.values()))
 
+    def clear_blockchain_transaction(self, blockchain):
+        for block in blockchain.chain:
+            for transaction in block.data:
+                try:
+                    del self.transaction_map[transaction['id']]
+                except KeyError:
+                    pass
+
