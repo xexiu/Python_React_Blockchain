@@ -2,7 +2,7 @@ import requests
 
 from backend.blockchain.blockchain import Blockchain
 from backend.pubsub.pubsub import PubSub
-from backend.util.global_variables import CONFIG_PN, PEER, ROOT_PORT
+from backend.util.global_variables import CONFIG_PN, ROOT_PORT
 from backend.wallet.transaction import Transaction
 from backend.wallet.transaction_pool import TransactionPool
 from backend.wallet.wallet import Wallet
