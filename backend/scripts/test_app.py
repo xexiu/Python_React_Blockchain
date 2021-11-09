@@ -5,9 +5,9 @@ from backend.util.global_variables import BASE_URL, ONE_SECOND
 from backend.wallet.wallet import Wallet
 
 MAP_REQUESTS = {
-    'blockchain': requests.get(f'{BASE_URL}/blockchain').json(),
-    'mine': requests.get(f'{BASE_URL}/blockchain/mine').json(),
-    'wallet_transaction': lambda recipient, amount: requests.post(f'{BASE_URL}/wallet/transact', json={'recipient': recipient, 'amount': amount}).json()
+    'blockchain': requests.get(f'{BASE_URL}/blockchain').json(), # get
+    'mine': requests.get(f'{BASE_URL}/blockchain/mine').json(), # get
+    'wallet_transaction': lambda recipient, amount: requests.post(f'{BASE_URL}/wallet/transact', json={'recipient': recipient, 'amount': amount}).json() # post
 }
 
 
