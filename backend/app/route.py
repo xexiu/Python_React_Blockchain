@@ -24,7 +24,10 @@ class Route:
         return jsonify(self.blockchain.to_json())
 
     def route_blockchain_mine(self):
-        self.blockchain.add_block(self.transaction_pool.transaction_data())
+        transaction_data = self.transaction_pool.transaction_data()
+        transaction_data.append(Transaction.reward_transaction(self.wallet).to_json())
+        
+        self.blockchain.add_block(transaction_data)
 
         last_block_in_chain = self.blockchain.chain[-1]
 
