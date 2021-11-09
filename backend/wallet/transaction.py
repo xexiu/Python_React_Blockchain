@@ -46,7 +46,7 @@ class Transaction:
         return self.__dict__
 
     def from_json(transaction_json):
-        return Transaction(id=transaction_json['id'], output=transaction_json['output'], input=transaction_json['input'])
+        return Transaction(**transaction_json)
 
     @staticmethod
     def is_valid_transaction(transaction):

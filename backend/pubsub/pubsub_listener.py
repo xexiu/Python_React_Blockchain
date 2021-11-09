@@ -1,6 +1,7 @@
 from backend.blockchain.block import Block
 from backend.util.global_variables import CHANNELS
 from pubnub.callbacks import SubscribeCallback
+from backend.wallet.transaction import Transaction
 
 
 class Listener(SubscribeCallback):
@@ -23,6 +24,8 @@ class Listener(SubscribeCallback):
             except Exception as e:
                 raise Exception(f'Could not replace chain: {e}')
         elif message.channel == CHANNELS['TRANSACTION']:
+            transaction = Transaction.from_json(message.message)
+            self.transaction_pool.set_transaction(transaction)
 
 
         return super().message(pubnub, message)
