@@ -8,11 +8,13 @@ from backend.util.global_variables import CONFIG_PN, PEER, PORT, ROOT_PORT
 from backend.wallet.transaction import Transaction
 from backend.wallet.wallet import Wallet
 from flask import Flask, jsonify, request
+from backend.wallet.transaction_pool import TransactionPool
 
 app = Flask(__name__)
 blockchain = Blockchain()
 wallet = Wallet()
-pubsub = PubSub(blockchain, **CONFIG_PN)
+transaction_pool = TransactionPool()
+pubsub = PubSub(blockchain, transaction_pool, **CONFIG_PN)
 
 
 @app.route('/')

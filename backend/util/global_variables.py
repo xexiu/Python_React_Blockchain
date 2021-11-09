@@ -3,7 +3,8 @@ PORT: int = ROOT_PORT
 PEER: str = 'PEER'
 CHANNELS: dict[str, str] = {
     'TEST': 'TEST_CHANNEL',
-    'BLOCK': 'BLOCK_CHANNEL'
+    'BLOCK': 'BLOCK_CHANNEL',
+    'TRANSACTION': 'TRANSACTION_CHANNEL'
 }
 CONFIG_PN: dict[str, str] = {
     'subKey': 'sub-c-0f0e7a52-2ffd-11ec-9682-f27e7ede0273',

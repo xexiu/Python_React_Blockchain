@@ -4,8 +4,9 @@ from pubnub.callbacks import SubscribeCallback
 
 
 class Listener(SubscribeCallback):
-    def __init__(self, blockchain: list) -> None:
+    def __init__(self, blockchain: list, transaction_pool) -> None:
         self.blockchain = blockchain
+        self.transaction_pool = transaction_pool
 
     def message(self, pubnub, message: str):
         print(f'-- Channel: {message.channel} | Message: {message.message}')
@@ -21,5 +22,7 @@ class Listener(SubscribeCallback):
                 print('\n -- Successfully replaced the local chain')
             except Exception as e:
                 raise Exception(f'Could not replace chain: {e}')
+        elif message.channel == CHANNELS['TRANSACTION']:
+
 
         return super().message(pubnub, message)
