@@ -25,6 +25,10 @@ def route_blockchain_mine():
 def route_wallet_transact():
     return route.route_wallet_transact()
 
+@route.app.route('/wallet/info')
+def route_wallet_info():
+    return route.route_wallet_info()
+
 # Default to port=5000 -> app.run() -> Or add a custom port -> app.run(port:5001)
 
 if(os.environ.get(PEER) == 'True'):

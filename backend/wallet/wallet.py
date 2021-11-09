@@ -11,13 +11,17 @@ from cryptography.hazmat.primitives.asymmetric.utils import (
 
 
 class Wallet:
-    def __init__(self) -> None:
+    def __init__(self, blockchain=None) -> None:
+        self.blockchain = blockchain
         self.address: str = str(uuid.uuid4())[0:8]
-        self.balance: int = STARTING_BALANCE
         self.private_key: str = ec.generate_private_key(
             ec.SECP256R1(), default_backend())
         self.public_key: str = self.private_key.public_key()
         self.public_key = self.serialize_public_key()
+
+    @property
+    def balance(self):
+        return Wallet.calculate_balance(self.blockchain, self.address)
 
     def sign(self, data: any):
         return decode_dss_signature(self.private_key.sign(json.dumps(data).encode('utf-8'), ec.ECDSA(hashes.SHA256())))
@@ -45,6 +49,9 @@ class Wallet:
     @staticmethod
     def calculate_balance(blockchain, address):
         balance = STARTING_BALANCE
+
+        if not blockchain:
+            return balance
 
         for block in blockchain.chain:
             for transaction in block.data:

@@ -1,5 +1,4 @@
 import requests
-
 from backend.blockchain.blockchain import Blockchain
 from backend.pubsub.pubsub import PubSub
 from backend.util.global_variables import CONFIG_PN, ROOT_PORT
@@ -11,12 +10,12 @@ from flask import Flask, jsonify, request
 
 class Route:
     def __init__(self, name) -> None:
-        self.app = Flask(__name__)
+        self.app = Flask(name)
         self.blockchain = Blockchain()
         self.transaction_pool = TransactionPool()
         self.pubsub = PubSub(
             self.blockchain, self.transaction_pool, **CONFIG_PN)
-        self.wallet = Wallet()
+        self.wallet = Wallet(self.blockchain)
 
     def default():
         return 'Welcome to Homepage'
@@ -53,6 +52,9 @@ class Route:
         self.pubsub.broadcast_transaction(transaction)
 
         return jsonify(transaction.to_json())
+
+    def route_wallet_info(self):
+        return jsonify({'address': self.wallet.address, 'balance': self.wallet.balance})
 
     def get_new_chain(self):
         result = requests.get(f'http://127.0.0.1:{ROOT_PORT}/blockchain')
