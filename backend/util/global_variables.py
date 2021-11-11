@@ -2,6 +2,7 @@ ROOT_PORT: int = 5000
 ONE_SECOND = 1
 PORT: int = ROOT_PORT
 PEER: str = 'PEER'
+SEED_DATA = 'SEED_DATA'
 CHANNELS: dict[str, str] = {
     'TEST': 'TEST_CHANNEL',
     'BLOCK': 'BLOCK_CHANNEL',

@@ -2,7 +2,7 @@ import os
 import random
 
 from backend.app.route import Route
-from backend.util.global_variables import PEER, PORT
+from backend.util.global_variables import PEER, PORT, SEED_DATA
 
 route = Route(__name__)
 
@@ -41,5 +41,9 @@ def route_random_jokes():
 if(os.environ.get(PEER) == 'True'):
     PORT = random.randint(5001, 6000)
     route.get_new_chain()
+
+if os.environ.get(SEED_DATA) == 'True':
+    route.seed_data()
+
 
 route.app.run(port=PORT)

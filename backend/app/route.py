@@ -21,7 +21,8 @@ jokes = json.loads(data)
 class Route:
     def __init__(self, name) -> None:
         self.app = Flask(name)
-        CORS(self.app, resources={r"/*": {"origins": "http://localhost:3000"}}, support_credentials=True)
+        CORS(self.app, resources={
+             r"/*": {"origins": "http://localhost:3000"}}, support_credentials=True)
         self.app.config['CORS_HEADERS'] = 'Content-Type'
         self.blockchain = Blockchain()
         self.transaction_pool = TransactionPool()
@@ -73,9 +74,23 @@ class Route:
         return jsonify({'address': self.wallet.address, 'balance': self.wallet.balance})
 
     def route_random_jokes(self):
-        random_array_item=random.choice(jokes)
+        random_array_item = random.choice(jokes)
         response = jsonify(random_array_item)
         return response
+
+    def seed_data(self):
+        for i in range(10):
+            self.blockchain.add_block([
+                Transaction(Wallet(), Wallet().address,
+                            random.randint(2, 50)).to_json(),
+                Transaction(Wallet(), Wallet().address,
+                            random.randint(2, 50)).to_json()
+            ])
+
+        for i in range(3):
+            self.transaction_pool.set_transaction(
+                Transaction(Wallet(), Wallet().address, random.randint(2, 50))
+            )
 
     def get_new_chain(self):
         result = requests.get(f'http://127.0.0.1:{ROOT_PORT}/blockchain')

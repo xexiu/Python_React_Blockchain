@@ -69,6 +69,9 @@ Python (API's Python Flask), Blockchains, Cryptocurrencies, Web Development (Bac
 - Execute command: `npm run start`
 - P.D. to fetch random jokes remeber to have the server started first: `python -m backend.app`
 
+** SEED the Backend with Data **
+- Execute the command: `export SEED_DATA=True && python -m backend.app`
+
 
 
 
