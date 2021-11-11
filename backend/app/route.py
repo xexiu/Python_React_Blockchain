@@ -78,6 +78,20 @@ class Route:
         response = jsonify(random_array_item)
         return response
 
+    def route_blockchain_page(self):
+        # http://127.0.0.1:5000/blockchain/page?start=2&end=5
+        start = int(request.args.get('start'))
+        end = int(request.args.get('end'))
+
+        # To reverse a list:
+        # foo = [1, 2, 3, 4]
+        # foo[::-1] --> [4, 3, 2, 1]
+
+        return jsonify(self.blockchain.to_json()[::-1][start:end])
+
+    def route_blockchain_length(self):
+        return jsonify(len(self.blockchain.chain))
+
     def seed_data(self):
         for i in range(10):
             self.blockchain.add_block([

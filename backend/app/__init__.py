@@ -7,17 +7,24 @@ from backend.util.global_variables import PEER, PORT, SEED_DATA
 route = Route(__name__)
 
 
-@route.app.route('/')
+@route.app.route('/', methods=['GET'])
 def default():
     return route.default()
 
 
-@route.app.route('/blockchain')
+@route.app.route('/blockchain', methods=['GET'])
 def route_blockchain():
     return route.route_blockchain()
 
+@route.app.route('/blockchain/page', methods=['GET'])
+def route_blockchain_page():
+    return route.route_blockchain_page()
 
-@route.app.route('/blockchain/mine')
+@route.app.route('/blockchain/length', methods=['GET'])
+def route_blockchain_length():
+    return route.route_blockchain_length()
+
+@route.app.route('/blockchain/mine', methods=['GET'])
 def route_blockchain_mine():
     return route.route_blockchain_mine()
 
