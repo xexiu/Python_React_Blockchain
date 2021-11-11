@@ -64,6 +64,11 @@ Python (API's Python Flask), Blockchains, Cryptocurrencies, Web Development (Bac
 
 - Execute command: `export PEER=True && python -m backend.app`
 
+** To RUN the frontend pard**
+
+- Execute command: `npm run start`
+- P.D. to fetch random jokes remeber to have the server started first: `python -m backend.app`
+
 
 
 

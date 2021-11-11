@@ -6,6 +6,7 @@ from backend.util.global_variables import PEER, PORT
 
 route = Route(__name__)
 
+
 @route.app.route('/')
 def default():
     return route.default()
@@ -25,11 +26,17 @@ def route_blockchain_mine():
 def route_wallet_transact():
     return route.route_wallet_transact()
 
-@route.app.route('/wallet/info')
+
+@route.app.route('/wallet/info', methods=['GET'])
 def route_wallet_info():
     return route.route_wallet_info()
 
+
+@route.app.route('/jokes/random_joke', methods=['GET'])
+def route_random_jokes():
+    return route.route_random_jokes()
 # Default to port=5000 -> app.run() -> Or add a custom port -> app.run(port:5001)
+
 
 if(os.environ.get(PEER) == 'True'):
     PORT = random.randint(5001, 6000)

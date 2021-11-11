@@ -1,3 +1,6 @@
+import json
+import random
+
 import requests
 from backend.blockchain.blockchain import Blockchain
 from backend.pubsub.pubsub import PubSub
@@ -6,18 +9,27 @@ from backend.wallet.transaction import Transaction
 from backend.wallet.transaction_pool import TransactionPool
 from backend.wallet.wallet import Wallet
 from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
+
+with open('jokes/index.json', 'r') as myfile:
+    data = myfile.read()
+
+# parse file
+jokes = json.loads(data)
 
 
 class Route:
     def __init__(self, name) -> None:
         self.app = Flask(name)
+        CORS(self.app, resources={r"/*": {"origins": "http://localhost:3000"}}, support_credentials=True)
+        self.app.config['CORS_HEADERS'] = 'Content-Type'
         self.blockchain = Blockchain()
         self.transaction_pool = TransactionPool()
         self.pubsub = PubSub(
             self.blockchain, self.transaction_pool, **CONFIG_PN)
         self.wallet = Wallet(self.blockchain)
 
-    def default():
+    def default(_Self):
         return 'Welcome to Homepage'
 
     def route_blockchain(self):
@@ -59,6 +71,11 @@ class Route:
 
     def route_wallet_info(self):
         return jsonify({'address': self.wallet.address, 'balance': self.wallet.balance})
+
+    def route_random_jokes(self):
+        random_array_item=random.choice(jokes)
+        response = jsonify(random_array_item)
+        return response
 
     def get_new_chain(self):
         result = requests.get(f'http://127.0.0.1:{ROOT_PORT}/blockchain')
