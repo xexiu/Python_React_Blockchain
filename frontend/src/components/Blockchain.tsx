@@ -29,7 +29,7 @@ function Blockchain(): JSX.Element {
         }
     }
 
-    function fetchBlockchainPage({ start = 0, end = PAGE_RANGE }: { start: number, end: number }): any {
+    function fetchBlockchainPage({ start = 0, end = PAGE_RANGE }: { start: number, end: number }): Promise<void> {
         return myFetch({ uri: `${API_BASE_URL}/blockchain/page?start=${start}&end=${end}`, cb: setBlockchain });
     }
 
