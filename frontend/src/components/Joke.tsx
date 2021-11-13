@@ -3,11 +3,11 @@ import { API_BASE_URL } from '../constants/api';
 import { JokeProps } from '../types/jokes';
 
 interface JokeInterface extends JokeProps {
-    error: string;
+    error?: string;
 }
 
 function Joke(): JSX.Element {
-    const [joke, setJoke]: [JokeInterface | {}, Dispatch<SetStateAction<object>>] = useState({});
+    const [joke, setJoke]: [JokeInterface, Dispatch<SetStateAction<object>>] = useState({});
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/jokes/random_joke`, {

@@ -92,6 +92,18 @@ class Route:
     def route_blockchain_length(self):
         return jsonify(len(self.blockchain.chain))
 
+    def route_known_addresses(self):
+        known_addresses = set()
+
+        for block in self.blockchain.chain:
+            for transaction in block.data:
+                known_addresses.update(transaction['output'].keys())
+
+        return jsonify(list(known_addresses))
+
+    def route_transactions(self):
+        return jsonify(self.transaction_pool.transaction_data())
+
     def seed_data(self):
         for i in range(10):
             self.blockchain.add_block([

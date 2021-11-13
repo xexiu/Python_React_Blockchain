@@ -1,5 +1,5 @@
 export type WalletProps = {
-    address: string;
-    balance: number;
-    error: string;
+    address?: string;
+    balance?: number;
+    error?: string;
 };

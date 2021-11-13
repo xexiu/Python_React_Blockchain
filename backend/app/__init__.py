@@ -42,6 +42,16 @@ def route_wallet_info():
 @route.app.route('/jokes/random_joke', methods=['GET'])
 def route_random_jokes():
     return route.route_random_jokes()
+
+@route.app.route('/known-addresses', methods=['GET'])
+def route_known_addresses():
+    return route.route_known_addresses()
+
+@route.app.route('/transactions', methods=['GET'])
+def route_transactions():
+    return route.route_transactions()
+
+
 # Default to port=5000 -> app.run() -> Or add a custom port -> app.run(port:5001)
 
 

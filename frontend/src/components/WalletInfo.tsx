@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../constants/api';
 import { WalletProps } from '../types/wallet';
 
 function WalletInfo(): JSX.Element {
-    const [walletInfo, setWalletInfo]: [WalletProps | {}, Dispatch<SetStateAction<object>>] = useState({});
+    const [walletInfo, setWalletInfo]: [WalletProps, Dispatch<SetStateAction<object>>] = useState({});
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/wallet/info`, {

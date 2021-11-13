@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../constants/api';
 import { PAGE_RANGE } from '../constants/app';
 import { BlockProps } from '../types/block';
@@ -49,6 +50,9 @@ function Blockchain(): JSX.Element {
     return (
         <div className='Blockchain'>
             <h3>Blockchain</h3>
+            <br />
+            <Link to='/'>Home</Link>
+            <br />
             <div>
                 {blockchain.map((block: BlockProps) => <Block key={block.hash} block={block} />)}
             </div>

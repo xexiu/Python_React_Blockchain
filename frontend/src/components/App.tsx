@@ -1,6 +1,6 @@
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 // import Joke from './Joke';
-import Blockchain from './Blockchain';
 import WalletInfo from './WalletInfo';
 
 function App(): JSX.Element {
@@ -14,10 +14,13 @@ function App(): JSX.Element {
     <div className='APP'>
       <img src={logo} alt='application-logo' className='logo' />
       <h3>Welcome to pychain</h3>
+      <Link to='/blockchain'>Blockchain</Link>
+      <br />
+      <Link to='/conduct-transaction'>Conduct Transaction</Link>
+      <br />
+      <Link to='/transaction-pool'>Transaction Pool</Link>
       <br />
       <WalletInfo />
-      <br />
-      <Blockchain />
     </div>
   );
 }
