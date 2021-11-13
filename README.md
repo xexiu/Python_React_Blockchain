@@ -64,10 +64,11 @@ Python (API's Python Flask), Blockchains, Cryptocurrencies, Web Development (Bac
 
 - Execute command: `export PEER=True && python -m backend.app`
 
-** To RUN the frontend pard**
+** To RUN the frontend part**
 
 - Execute command: `npm run start`
 - P.D. to fetch random jokes remeber to have the server started first: `python -m backend.app`
+- P.D2 to communicate between backend and frontend you also need to have the server started (optional: seeded, see below): `python -m backend.app`
 
 ** SEED the Backend with Data **
 - Execute the command: `export SEED_DATA=True && python -m backend.app`
