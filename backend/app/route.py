@@ -1,4 +1,5 @@
 import json
+import logging
 import random
 
 import requests
@@ -9,7 +10,6 @@ from backend.wallet.transaction import Transaction
 from backend.wallet.transaction_pool import TransactionPool
 from backend.wallet.wallet import Wallet
 from flask import Flask, jsonify, request
-from flask_cors import CORS
 
 with open('jokes/index.json', 'r') as myfile:
     data = myfile.read()
@@ -21,8 +21,6 @@ jokes = json.loads(data)
 class Route:
     def __init__(self, name) -> None:
         self.app = Flask(name)
-        CORS(self.app, resources={r"/*": {"origins": "http://localhost:3000"}})
-        self.app.config['CORS_HEADERS'] = 'Content-Type'
         self.blockchain = Blockchain()
         self.transaction_pool = TransactionPool()
         self.pubsub = PubSub(
@@ -126,3 +124,12 @@ class Route:
             print('\n -- Successfully synchronized the local chain')
         except Exception as e:
             print(f'\n -- Error synchronizing: {e}')
+
+
+def main():
+    route = Route(__name__)
+    # print(r'flask_cors_log:', {route.logger.info()})
+
+
+if __name__ == '__main__':
+    main()

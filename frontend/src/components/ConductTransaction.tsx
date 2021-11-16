@@ -20,11 +20,6 @@ function ConductTransaction() {
 
     async function submitTransaction() {
         const response = await post('/wallet/transact', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
             body: JSON.stringify({ recipient, amount })
         });
 

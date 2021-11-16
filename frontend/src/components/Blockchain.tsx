@@ -1,44 +1,39 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { API_BASE_URL } from '../constants/api';
 import { PAGE_RANGE } from '../constants/app';
-import { BlockProps } from '../types/block';
+import { useFetch } from '../custom-hooks/useFetch';
 import Block from './Block';
 
 
 function Blockchain(): JSX.Element {
+    const { isLoading, error, get } = useFetch();
     const [blockchain, setBlockchain] = useState([]);
-    const [error, setError] = useState('');
-    const [blockchainLength, setBlockchainLength]: [number, Dispatch<SetStateAction<number>>] = useState(0);
+    const [blockchainLength, setBlockchainLength] = useState(0);
 
-    async function myFetch({ uri, cb }: { uri: string; cb: Function; }): Promise<void> {
-        try {
-            const res = await fetch(uri, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                }
-            });
-            const blockchain = await res.json();
-            return cb(blockchain);
-        } catch (err: any) {
-            if (err.message === 'Failed to fetch') {
-                setError(`Error: ${err.messageServer}! Server is not started. Please start the server by running: python -m backend.app`);
-            }
-        }
+    async function fetchBlockchainPage({ start = 0, end = PAGE_RANGE }: { start: number, end: number }): Promise<void> {
+        const data = await get(`/blockchain/page?start=${start}&end=${end}`);
+
+        return setBlockchain(data);
     }
 
-    function fetchBlockchainPage({ start = 0, end = PAGE_RANGE }: { start: number, end: number }): Promise<void> {
-        return myFetch({ uri: `${API_BASE_URL}/blockchain/page?start=${start}&end=${end}`, cb: setBlockchain });
-    }
+    const fetchBlockchain = useCallback(async () => {
+        const data = await get('/blockchain');
+
+        return setBlockchain(data);
+    }, [get]);
+
+    const fetchBlockchainLength = useCallback(async () => {
+        const data = await get('/blockchain/length');
+
+        return setBlockchainLength(data);
+    }, [get]);
 
     useEffect(() => {
-        myFetch({ uri: `${API_BASE_URL}/blockchain`, cb: setBlockchain });
-        myFetch({ uri: `${API_BASE_URL}/blockchain/length`, cb: setBlockchainLength });
+        fetchBlockchain();
+        fetchBlockchainLength();
         return () => { };
-    }, []);
+    }, [fetchBlockchain, fetchBlockchainLength]);
 
     const buttonNumbers = [] as number[];
 
@@ -50,11 +45,12 @@ function Blockchain(): JSX.Element {
     return (
         <div className='Blockchain'>
             <h3>Blockchain</h3>
+            <h6>Number of blockchains: {blockchainLength}</h6>
             <br />
             <Link to='/'>Home</Link>
             <br />
             <div>
-                {blockchain.map((block: BlockProps) => <Block key={block.hash} block={block} />)}
+                {blockchain?.length && blockchain.map((block: any): JSX.Element => <Block key={block.hash} block={block} />)}
             </div>
             <div>
                 {
@@ -72,6 +68,7 @@ function Blockchain(): JSX.Element {
                     })
                 }
             </div>
+            {isLoading && <p>Loading...</p>}
             {error && <div>{error}</div>}
         </div>
     );
